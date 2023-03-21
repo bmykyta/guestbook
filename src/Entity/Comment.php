@@ -30,7 +30,7 @@ class Comment
     private Conference $conference;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private string $photoFilename;
+    private ?string $photoFilename =  null;
 
     public function __toString(): string
     {
