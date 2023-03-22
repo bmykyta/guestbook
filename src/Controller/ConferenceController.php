@@ -13,11 +13,8 @@ use Twig\Environment;
 
 class ConferenceController extends AbstractController
 {
-    private Environment $twig;
-
-    public function __construct(Environment $twig)
+    public function __construct(private readonly Environment $twig)
     {
-        $this->twig = $twig;
     }
 
     #[Route('/', name: 'homepage')]
@@ -25,7 +22,6 @@ class ConferenceController extends AbstractController
     {
         return new Response(
             $this->twig->render('conference/index.html.twig', [
-                'conferences' => $conferenceRepository->findAll(),
             ])
         );
     }
