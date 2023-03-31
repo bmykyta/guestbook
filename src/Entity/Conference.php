@@ -31,7 +31,7 @@ class Conference
     private Collection $comments;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    private string $slug;
+    private ?string $slug = null;
 
     public function __construct()
     {
