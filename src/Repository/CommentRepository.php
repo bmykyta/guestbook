@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use App\Entity\Conference;
+use App\Service\Enum\CommentState;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -29,16 +31,27 @@ class CommentRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('c')
             ->andWhere('c.conference = :conference')
-            ->setParameter(
-                'conference',
-                $conference
-            )
+            ->andWhere('c.state = :state')
+            ->setParameter('conference', $conference)
+            ->setParameter('state', CommentState::PUBLISHED)
             ->orderBy('c.createdAt', 'DESC')
             ->setMaxResults(self::PAGINATOR_PER_PAGE)
             ->setFirstResult($offset)
             ->getQuery();
 
         return new Paginator($query);
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findOneByEmail(string $email): ?Comment
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
     public function add(Comment $entity, bool $flush = false): void
     {
@@ -70,16 +83,6 @@ class CommentRepository extends ServiceEntityRepository
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Comment
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
 //        ;
 //    }
 }

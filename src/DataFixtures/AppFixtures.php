@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Admin;
 use App\Entity\Comment;
 use App\Entity\Conference;
+use App\Service\Enum\CommentState;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
@@ -38,9 +39,19 @@ class AppFixtures extends Fixture
             ->setConference($amsterdam)
             ->setAuthor('Mykyta')
             ->setEmail('mykyta@example.com')
+            ->setState(CommentState::PUBLISHED)
             ->setText('This was a great conference.')
         ;
         $manager->persist($comment1);
+
+        $comment2 = new Comment();
+        $comment2
+            ->setConference($amsterdam)
+            ->setAuthor('Lucas')
+            ->setEmail('lucas@example.com')
+            ->setText('I think this one is going to be moderated.')
+        ;
+        $manager->persist($comment2);
 
         $admin = new Admin();
         $admin
