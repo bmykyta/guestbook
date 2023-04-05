@@ -3,7 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\Comment;
-use App\SpamChecker;
+use App\Service\SpamChecker;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
