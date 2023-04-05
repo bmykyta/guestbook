@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
+use App\Service\Enum\CommentState;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -36,7 +37,10 @@ class Comment
     private Conference $conference;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $photoFilename =  null;
+    private ?string $photoFilename = null;
+
+    #[ORM\Column(type: 'string', length: 255, enumType: CommentState::class, options: ["default" => "submitted"])]
+    private CommentState $state = CommentState::SUBMITTED;
 
     public function __toString(): string
     {
@@ -122,6 +126,18 @@ class Comment
     public function setPhotoFilename(?string $photoFilename): self
     {
         $this->photoFilename = $photoFilename;
+
+        return $this;
+    }
+
+    public function getState(): CommentState
+    {
+        return $this->state;
+    }
+
+    public function setState(CommentState $state = CommentState::SUBMITTED): self
+    {
+        $this->state = $state;
 
         return $this;
     }
