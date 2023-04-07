@@ -11,9 +11,9 @@ class SpamChecker
 {
     private string $endpoint;
 
-    public function __construct(private readonly HttpClientInterface $client, readonly string $akismetKey)
+    public function __construct(private readonly HttpClientInterface $client, private readonly string $akismetKey)
     {
-        $this->endpoint = sprintf('https://%s.rest.akismet.com/1.1/comment-check', $this->akismetKey);
+        $this->endpoint = 'https://rest.akismet.com/1.1/comment-check';
     }
 
     /**
@@ -25,6 +25,7 @@ class SpamChecker
     {
         $response = $this->client->request(Request::METHOD_POST, $this->endpoint, [
             'body' => array_merge($context, [
+                'api_key'              => $this->akismetKey,
                 'blog'                 => 'https://guestbook.example.com',
                 'comment_type'         => 'comment',
                 'comment_author'       => $comment->getAuthor(),
@@ -50,6 +51,6 @@ class SpamChecker
             );
         }
 
-        return 'true' === $content ? 1 : 0;
+        return 'true' === $content ? 2 : 0;
     }
 }
