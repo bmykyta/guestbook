@@ -14,7 +14,7 @@ final class Version20230407184112 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Set up async handler for comment message in messeger.yaml.';
+        return 'Set up async handler for comment message in messenger.yaml.';
     }
 
     public function up(Schema $schema): void
